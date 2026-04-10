@@ -9,8 +9,7 @@ import {
   Plane, 
   Database, 
   ArrowUpRight,
-  ExternalLink,
-  Github
+  ExternalLink
 } from "lucide-react";
 
 const GithubIcon = ({ className }: { className?: string }) => (
