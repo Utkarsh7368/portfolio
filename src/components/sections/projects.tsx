@@ -2,8 +2,6 @@
 
 import { motion } from "framer-motion";
 import { useState, useEffect } from "react";
-import { CardBody, CardContainer, CardItem } from "@/components/ui/3d-card-effect";
-import { ParticleText } from "@/components/ui/particle-text";
 import { 
   Code2, 
   Plane, 
@@ -11,6 +9,8 @@ import {
   ArrowUpRight,
   ExternalLink
 } from "lucide-react";
+import { ParticleText } from "@/components/ui/particle-text";
+import { CardBody, CardContainer, CardItem } from "@/components/ui/3d-card-effect";
 
 const GithubIcon = ({ className }: { className?: string }) => (
   <svg className={className} viewBox="0 0 24 24" fill="currentColor">
