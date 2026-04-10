@@ -3,6 +3,8 @@
 import { motion } from "framer-motion";
 
 import { Mail, ArrowRight, Send } from "lucide-react";
+import { useState, useEffect } from "react";
+import { ParticleText } from "@/components/ui/particle-text";
 
 const GithubIcon = ({ className }: { className?: string }) => (
   <svg className={className} viewBox="0 0 24 24" fill="currentColor">
@@ -50,6 +52,17 @@ const socials = [
 ];
 
 export default function Contact() {
+  const [fontSize, setFontSize] = useState(120);
+
+  useEffect(() => {
+    const handleResize = () => {
+      setFontSize(window.innerWidth < 768 ? 50 : 100);
+    };
+    handleResize();
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
+
   return (
     <section id="contact" className="section-padding relative bg-black overflow-hidden">
       {/* Background glow */}
@@ -63,29 +76,33 @@ export default function Contact() {
       <div className="max-w-screen-xl mx-auto">
         {/* Heading */}
         <motion.div
-          className="mb-16 text-center"
-          initial={{ opacity: 0, y: 40 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
-        >
-          <p className="text-xs tracking-[0.4em] text-white/30 uppercase font-mono mb-4">
-            06 / Contact
-          </p>
-          <h2 className="text-4xl md:text-6xl font-bold tracking-tight mb-4">
-            Let's Build
-            <span
-              className="ml-4"
-              style={{ color: "#c3e41d", fontFamily: "var(--font-fira)" }}
-            >
-              Together
-            </span>
-          </h2>
-          <p className="text-white/50 text-base md:text-lg max-w-xl mx-auto">
-            I'm always open to new opportunities, collaborations, and conversations.
-            Drop me a message — I respond within 24 hours.
-          </p>
-        </motion.div>
+           className="mb-16 md:mb-24 flex justify-center w-full"
+           initial={{ opacity: 0, y: 40 }}
+           whileInView={{ opacity: 1, y: 0 }}
+           viewport={{ once: true }}
+           transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
+         >
+           <div className="w-full text-center">
+             <p className="text-xs tracking-[0.4em] text-white/30 uppercase font-mono mb-6">
+               06 / Contact
+             </p>
+             <div className="h-[120px] md:h-[180px] w-full flex justify-center items-center">
+               <ParticleText 
+                 parts={[
+                   { text: "Let's Build", color: "white" },
+                   { text: "Together", color: "#c3e41d" }
+                 ]}
+                 fontSize={fontSize} 
+                 className="w-full h-full"
+                 hoverRadius={120}
+               />
+             </div>
+             <p className="text-white/50 text-base md:text-lg max-w-xl mx-auto mt-8">
+                I'm always open to new opportunities, collaborations, and conversations.
+                Drop me a message — I respond within 24 hours.
+             </p>
+           </div>
+         </motion.div>
 
         {/* Main contact card */}
         <motion.div

@@ -1,7 +1,9 @@
 "use client";
 
+import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
-import { SplineScene } from "@/components/ui/spline-scene";
+import { SplineScene } from "@/components/ui/splite";
+import { ParticleText } from "@/components/ui/particle-text";
 
 const stats = [
   { value: "300+", label: "LeetCode Solved" },
@@ -11,6 +13,17 @@ const stats = [
 ];
 
 export default function About() {
+  const [fontSize, setFontSize] = useState(120);
+
+  useEffect(() => {
+    const handleResize = () => {
+      setFontSize(window.innerWidth < 768 ? 60 : 120);
+    };
+    handleResize(); // Initial check
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
+
   return (
     <section id="about" className="section-padding relative bg-black overflow-hidden">
       {/* Subtle grid */}
@@ -25,25 +38,29 @@ export default function About() {
       <div className="max-w-screen-xl mx-auto">
         {/* Section label */}
         <motion.div
-          className="mb-16 md:mb-20"
-          initial={{ opacity: 0, y: 40 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
-        >
-          <p className="text-xs tracking-[0.4em] text-white/30 uppercase font-mono mb-4">
-            02 / About
-          </p>
-          <h2 className="text-4xl md:text-6xl font-bold tracking-tight">
-            Who I
-            <span
-              className="ml-4"
-              style={{ color: "#c3e41d", fontFamily: "var(--font-fira)" }}
-            >
-              Am
-            </span>
-          </h2>
-        </motion.div>
+           className="mb-16 md:mb-20 flex justify-center w-full"
+           initial={{ opacity: 0, y: 40 }}
+           whileInView={{ opacity: 1, y: 0 }}
+           viewport={{ once: true }}
+           transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
+         >
+           <div className="w-full text-center">
+             <p className="text-xs tracking-[0.4em] text-white/30 uppercase font-mono mb-6">
+               02 / About
+             </p>
+             <div className="h-[120px] md:h-[180px] w-full flex justify-center items-center">
+                <ParticleText 
+                  parts={[
+                    { text: "Who", color: "white" },
+                    { text: "I Am", color: "#c3e41d" }
+                  ]}
+                  fontSize={fontSize} 
+                  className="w-full h-full"
+                  hoverRadius={150}
+                />
+             </div>
+           </div>
+         </motion.div>
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-20 items-center">
           {/* Left — Text */}
@@ -120,15 +137,20 @@ export default function About() {
           >
             {/* 3D Spline */}
             <div
-              className="w-full h-72 md:h-96 rounded-2xl overflow-hidden mb-8"
-              style={{
-                border: "1px solid rgba(195,228,29,0.1)",
-                background: "rgba(195,228,29,0.03)",
-              }}
+              className="w-full h-[500px] md:h-[600px] relative overflow-hidden group"
             >
               <SplineScene
-                scene="https://prod.spline.design/kZDDjO5HuC9GJUM2/scene.splinecode"
+                scene="https://prod.spline.design/LoE7yPdnY3o9OeA4/scene.splinecode"
                 className="w-full h-full"
+              />
+              {/* Gradient fade — hides watermark naturally matching the dark theme */}
+              <div
+                className="absolute bottom-0 left-0 right-0 pointer-events-none"
+                style={{
+                  height: '160px',
+                  background: 'linear-gradient(to top, #030303 50%, transparent 100%)',
+                  zIndex: 9999,
+                }}
               />
             </div>
 

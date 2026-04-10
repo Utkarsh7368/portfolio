@@ -49,17 +49,22 @@ export const metadata: Metadata = {
   },
 };
 
+import { SmoothScroll } from "@/components/ui/smooth-scroll";
+
 export default function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className="dark scroll-smooth">
+    <html lang="en" className="dark scroll-smooth" suppressHydrationWarning>
       <body
         className={`${spaceGrotesk.variable} ${firaCode.variable} ${inter.variable} font-sans antialiased bg-black text-white overflow-x-hidden`}
+        suppressHydrationWarning
       >
-        {children}
+        <div className="relative min-h-screen">
+          <SmoothScroll>{children}</SmoothScroll>
+        </div>
       </body>
     </html>
   );

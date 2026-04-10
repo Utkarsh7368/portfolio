@@ -211,3 +211,24 @@ body::before {
 
 .text-white\/70 { color: rgba(255, 255, 255, 0.7); }
 .text-white\/80 { color: rgba(255, 255, 255, 0.8); }
+
+/* ── Hide Spline Watermark (all known selectors) ─────────────────── */
+[class*='spline-watermark'],
+[class*='SplineWatermark'],
+.spline-watermark,
+a.spline-watermark,
+a[href*='spline.design'],
+a[href*='spline.design'] *,
+canvas ~ a,
+canvas + a {
+  display: none !important;
+  opacity: 0 !important;
+  visibility: hidden !important;
+  pointer-events: none !important;
+  width: 0 !important;
+  height: 0 !important;
+  overflow: hidden !important;
+  position: absolute !important;
+  top: -9999px !important;
+  left: -9999px !important;
+}

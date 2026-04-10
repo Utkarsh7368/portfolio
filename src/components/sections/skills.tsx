@@ -1,8 +1,10 @@
 "use client";
 
 import { motion } from "framer-motion";
+import { useState, useEffect } from "react";
 import { TiltCard } from "@/components/ui/tilt-card";
 import { Code2, Cpu, Globe, Layers, Terminal, Zap } from "lucide-react";
+import { ParticleText } from "@/components/ui/particle-text";
 
 const skills = {
   Frontend: [
@@ -48,6 +50,17 @@ const itemVariants = {
 };
 
 export default function Skills() {
+  const [fontSize, setFontSize] = useState(120);
+
+  useEffect(() => {
+    const handleResize = () => {
+      setFontSize(window.innerWidth < 768 ? 50 : 100);
+    };
+    handleResize();
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
+
   return (
     <section id="skills" className="section-padding relative bg-black overflow-hidden">
       {/* Bg accent */}
@@ -62,29 +75,33 @@ export default function Skills() {
       <div className="max-w-screen-xl mx-auto">
         {/* Heading */}
         <motion.div
-          className="mb-16 md:mb-20"
-          initial={{ opacity: 0, y: 40 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
-        >
-          <p className="text-xs tracking-[0.4em] text-white/30 uppercase font-mono mb-4">
-            03 / Skills
-          </p>
-          <h2 className="text-4xl md:text-6xl font-bold tracking-tight">
-            My
-            <span
-              className="ml-4"
-              style={{ color: "#c3e41d", fontFamily: "var(--font-fira)" }}
-            >
-              Arsenal
-            </span>
-          </h2>
-        </motion.div>
+           className="mb-16 md:mb-24 flex justify-center w-full"
+           initial={{ opacity: 0, y: 40 }}
+           whileInView={{ opacity: 1, y: 0 }}
+           viewport={{ once: true }}
+           transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
+         >
+           <div className="w-full text-center">
+             <p className="text-xs tracking-[0.4em] text-white/30 uppercase font-mono mb-6">
+               04 / Skills
+             </p>
+             <div className="h-[120px] md:h-[180px] w-full flex justify-center items-center">
+               <ParticleText 
+                 parts={[
+                   { text: "My", color: "white" },
+                   { text: "Arsenal", color: "#c3e41d" }
+                 ]}
+                 fontSize={fontSize} 
+                 className="w-full h-full"
+                 hoverRadius={120}
+               />
+             </div>
+           </div>
+         </motion.div>
 
         {/* Skill categories */}
         <motion.div
-          className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-16"
+          className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-16 px-6"
           variants={containerVariants}
           initial="hidden"
           whileInView="visible"

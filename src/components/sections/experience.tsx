@@ -1,8 +1,10 @@
 "use client";
 
 import { motion } from "framer-motion";
+import { useState, useEffect } from "react";
 import { Server, Database, Cloud } from "lucide-react";
-import RadialOrbitalTimeline from "@/components/ui/radial-orbital-timeline";
+import { StickyExperience } from "@/components/ui/sticky-experience";
+import { ParticleText } from "@/components/ui/particle-text";
 
 const timelineData = [
   {
@@ -41,31 +43,50 @@ const timelineData = [
 ];
 
 export default function Experience() {
-  return (
-    <section id="experience" className="section-padding relative overflow-hidden">
-      <div className="max-w-screen-xl mx-auto">
-        <motion.div
-          className="mb-16 md:mb-20 text-center"
-          initial={{ opacity: 0, y: 40 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
-        >
-          <p className="text-xs tracking-[0.4em] text-white/30 uppercase font-mono mb-4">
-            05 / Experience
-          </p>
-          <h2 className="text-4xl md:text-6xl font-bold tracking-tight">
-            Ingen Technologies
-            <span
-              className="ml-4 block mt-2 text-2xl"
-              style={{ color: "#c3e41d", fontFamily: "var(--font-fira)" }}
-            >
-              Backend Software Developer
-            </span>
-          </h2>
-        </motion.div>
+  const [fontSize, setFontSize] = useState(120);
 
-        <RadialOrbitalTimeline timelineData={timelineData} />
+  useEffect(() => {
+    const handleResize = () => {
+      setFontSize(window.innerWidth < 768 ? 50 : 100);
+    };
+    handleResize();
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
+
+  return (
+    <section id="experience" className="section-padding relative overflow-hidden bg-black/50 overflow-hidden">
+      <div className="max-w-screen-xl mx-auto px-6">
+        <motion.div
+           className="mb-16 md:mb-24 flex justify-center w-full"
+           initial={{ opacity: 0, y: 40 }}
+           whileInView={{ opacity: 1, y: 0 }}
+           viewport={{ once: true }}
+           transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
+         >
+           <div className="w-full text-center">
+             <p className="text-xs tracking-[0.4em] text-white/30 uppercase font-mono mb-6">
+               05 / Experience
+             </p>
+             <div className="h-[120px] md:h-[180px] w-full flex justify-center items-center">
+               <ParticleText 
+                 parts={[
+                   { text: "Professional", color: "white" },
+                   { text: "Journey", color: "#c3e41d", isItalic: true }
+                 ]}
+                 fontSize={fontSize} 
+                 className="w-full h-full"
+                 hoverRadius={120}
+               />
+             </div>
+             <div className="mt-8 flex flex-col items-center">
+                <span className="text-xl md:text-2xl font-medium text-white/80">Backend Software Developer @ Ingen Tech</span>
+                <span className="text-sm font-mono text-white/30 tracking-widest mt-2 uppercase">Jaipur, India</span>
+             </div>
+           </div>
+         </motion.div>
+
+        <StickyExperience items={timelineData} />
       </div>
     </section>
   );

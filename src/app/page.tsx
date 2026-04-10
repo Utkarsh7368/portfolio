@@ -7,10 +7,12 @@ import Projects from "@/components/sections/projects";
 import Experience from "@/components/sections/experience";
 import Contact from "@/components/sections/contact";
 import Footer from "@/components/sections/footer";
+import Preloader from "@/components/ui/preloader";
 
 export default function Home() {
   return (
     <main className="relative">
+      <Preloader />
       <MagneticCursor />
       <Navbar />
       <Hero />
