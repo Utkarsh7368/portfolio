@@ -58,7 +58,8 @@ export default function Projects() {
 
   useEffect(() => {
     const handleResize = () => {
-      setFontSize(window.innerWidth < 768 ? 50 : 100);
+      const scale = window.innerWidth < 768 ? 13 : 18;
+      setFontSize(Math.max(28, Math.min(85, window.innerWidth / scale)));
     };
     handleResize();
     window.addEventListener("resize", handleResize);

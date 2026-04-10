@@ -54,7 +54,8 @@ export default function Skills() {
 
   useEffect(() => {
     const handleResize = () => {
-      setFontSize(window.innerWidth < 768 ? 50 : 100);
+      const scale = window.innerWidth < 768 ? 12 : 16;
+      setFontSize(Math.max(30, Math.min(95, window.innerWidth / scale)));
     };
     handleResize();
     window.addEventListener("resize", handleResize);

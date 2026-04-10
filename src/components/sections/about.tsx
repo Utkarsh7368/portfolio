@@ -17,9 +17,11 @@ export default function About() {
 
   useEffect(() => {
     const handleResize = () => {
-      setFontSize(window.innerWidth < 768 ? 60 : 120);
+      // More aggressive scaling for small screens
+      const scale = window.innerWidth < 768 ? 10 : 15;
+      setFontSize(Math.max(32, Math.min(100, window.innerWidth / scale)));
     };
-    handleResize(); // Initial check
+    handleResize();
     window.addEventListener("resize", handleResize);
     return () => window.removeEventListener("resize", handleResize);
   }, []);
