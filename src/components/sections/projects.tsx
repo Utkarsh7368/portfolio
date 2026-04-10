@@ -20,37 +20,12 @@ const GithubIcon = ({ className }: { className?: string }) => (
 
 const projects = [
   {
-    title: "HireWise",
-    description: "AI-powered remote interview platform with live collaborative coding and secure verification.",
-    image: "https://images.unsplash.com/photo-1516321497487-e288fb19713f?q=80&w=2670&auto=format&fit=crop",
-    tech: ["Next.js", "Socket.io", "Gemini AI"],
-    link: "#",
-    github: "#"
-  },
-  {
     title: "Ghummakad Yatri",
     description: "A premium travel booking engine with integrated payment gateways and role-based administration.",
     image: "https://images.unsplash.com/photo-1463123081488-789f998ac9c4?q=80&w=2670&auto=format&fit=crop",
     tech: ["React", "Node.js", "Stripe"],
-    link: "#",
-    github: "#"
-  },
-  {
-    title: "Ingen Tech API",
-    description: "Highly scalable RESTful infrastructure serving multi-collection MongoDB operations and AWS S3.",
-    image: "https://images.unsplash.com/photo-1555066931-4365d14bab8c?q=80&w=2670&auto=format&fit=crop",
-    tech: ["Express", "MongoDB", "AWS S3"],
-    link: "#",
-    github: "#"
-  },
-  {
-    title: "The Architecture",
-    description: "Modern stack leveraging Next.js 15, Framer Motion, and Three.js for immersive digital experiences.",
-    image: "https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?q=80&w=2564&auto=format&fit=crop",
-    tech: ["Next.js 15", "Framer", "Three.js"],
-    link: "#",
-    github: "#"
-  },
+    link: "https://ghumakkad-yatri.vercel.app/"
+  }
 ];
 
 export default function Projects() {
@@ -114,70 +89,65 @@ export default function Projects() {
            </div>
          </motion.div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-12">
-          {projects.map((project, i) => (
-            <CardContainer key={i} className="inter-var">
-              <CardBody className="bg-neutral-950/50 backdrop-blur-sm relative group/card border border-white/10 w-full h-[450px] rounded-2xl p-6 transition-colors hover:border-[#c3e41d]/30">
-                <CardItem
-                  translateZ="50"
-                  className="text-2xl font-bold text-white mb-2"
-                >
-                  {project.title}
-                </CardItem>
-                <CardItem
-                  as="p"
-                  translateZ="60"
-                  className="text-neutral-400 text-sm max-w-sm mb-6"
-                >
-                  {project.description}
-                </CardItem>
-                
-                <CardItem translateZ="100" className="w-full mb-8">
-                  <div className="relative h-56 w-full rounded-xl overflow-hidden group/img">
-                    <img
-                      src={project.image}
-                      className="h-full w-full object-cover transition-transform duration-500 group-hover/img:scale-105"
-                      alt={project.title}
-                    />
-                    <div className="absolute inset-0 bg-black/40 group-hover/img:bg-black/20 transition-colors" />
-                  </div>
-                </CardItem>
-
-                <div className="flex justify-between items-center">
-                  <div className="flex gap-2">
-                    {project.tech.map((t, idx) => (
-                      <CardItem
-                        key={idx}
-                        translateZ={20 + (idx * 10)}
-                        className="px-3 py-1 bg-white/5 border border-white/10 rounded-full text-[10px] text-white/50"
-                      >
-                        {t}
-                      </CardItem>
-                    ))}
-                  </div>
+        <div className="flex justify-center">
+          <div className="max-w-2xl w-full">
+            {projects.map((project, i) => (
+              <CardContainer key={i} className="inter-var">
+                <CardBody className="bg-neutral-950/50 backdrop-blur-sm relative group/card border border-white/10 w-full h-[450px] rounded-2xl p-6 transition-colors hover:border-[#c3e41d]/30">
+                  <CardItem
+                    translateZ="50"
+                    className="text-2xl font-bold text-white mb-2"
+                  >
+                    {project.title}
+                  </CardItem>
+                  <CardItem
+                    as="p"
+                    translateZ="60"
+                    className="text-neutral-400 text-sm max-w-sm mb-6"
+                  >
+                    {project.description}
+                  </CardItem>
                   
-                  <div className="flex gap-3">
-                    <CardItem
-                      translateZ={20}
-                      as="a"
-                      href={project.github}
-                      className="p-2 rounded-full border border-white/10 hover:bg-white/5 text-white/50 hover:text-white transition-colors"
-                    >
-                      <GithubIcon className="w-4 h-4" />
-                    </CardItem>
-                    <CardItem
-                      translateZ={20}
-                      as="a"
-                      href={project.link}
-                      className="p-2 rounded-full bg-[#c3e41d] text-black hover:scale-110 transition-all font-bold"
-                    >
-                      <ArrowUpRight size={16} />
-                    </CardItem>
+                  <CardItem translateZ="100" className="w-full mb-8">
+                    <div className="relative h-56 w-full rounded-xl overflow-hidden group/img">
+                      <img
+                        src={project.image}
+                        className="h-full w-full object-cover transition-transform duration-500 group-hover/img:scale-105"
+                        alt={project.title}
+                      />
+                      <div className="absolute inset-0 bg-black/40 group-hover/img:bg-black/20 transition-colors" />
+                    </div>
+                  </CardItem>
+
+                  <div className="flex justify-between items-center">
+                    <div className="flex gap-2">
+                      {project.tech.map((t, idx) => (
+                        <CardItem
+                          key={idx}
+                          translateZ={20 + (idx * 10)}
+                          className="px-3 py-1 bg-white/5 border border-white/10 rounded-full text-[10px] text-white/50"
+                        >
+                          {t}
+                        </CardItem>
+                      ))}
+                    </div>
+                    
+                    <div className="flex gap-3">
+                      <CardItem
+                        translateZ={20}
+                        as="a"
+                        href={project.link}
+                        className="p-3 rounded-full bg-[#c3e41d] text-black hover:scale-110 transition-all font-bold flex items-center gap-2"
+                      >
+                         <span className="text-xs uppercase tracking-wider">View Project</span>
+                        <ArrowUpRight size={16} />
+                      </CardItem>
+                    </div>
                   </div>
-                </div>
-              </CardBody>
-            </CardContainer>
-          ))}
+                </CardBody>
+              </CardContainer>
+            ))}
+          </div>
         </div>
       </div>
     </section>

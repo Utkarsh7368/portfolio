@@ -6,40 +6,20 @@ import { Server, Database, Cloud } from "lucide-react";
 import { StickyExperience } from "@/components/ui/sticky-experience";
 import { ParticleText } from "@/components/ui/particle-text";
 
-const timelineData = [
+const experiences = [
   {
-    id: 1,
-    title: "RESTful APIs",
-    date: "Feb 2025",
-    content: "Engineered RESTful APIs for multi-collection MongoDB data operations, improving CRUD efficiency.",
-    category: "Backend",
-    icon: Server,
-    relatedIds: [2, 3],
-    status: "completed" as const,
-    energy: 100,
+    role: "Freelance Full Stack Developer",
+    period: "Oct 2024 - Present",
+    description: "Delivering high-performance full-stack applications, premium business sites, and AI-driven calling agents for global clients. Specialized in turning complex business requirements into scalable, production-ready software with a focus on world-class UX.",
+    tags: ["Full Stack", "AI Agents", "Business Solutions"]
   },
   {
-    id: 2,
-    title: "AWS S3 Integration",
-    date: "Mar 2025",
-    content: "Integrated AWS S3 for scalable file handling, with validation, parsing, and structured storage.",
-    category: "Cloud",
-    icon: Cloud,
-    relatedIds: [1, 3],
-    status: "in-progress" as const,
-    energy: 85,
-  },
-  {
-    id: 3,
-    title: "Modular API Services",
-    date: "Present",
-    content: "Developed modular API services reducing direct DB queries across teams, improving maintainability.",
-    category: "Architecture",
-    icon: Database,
-    relatedIds: [1],
-    status: "in-progress" as const,
-    energy: 70,
-  },
+    role: "Backend Software Developer @ Ingen Tech",
+    period: "Jan 2025 - Present",
+    location: "Kanpur, India",
+    description: "Architecting scalable RESTful infrastructures and optimizing database operations for multi-collection MongoDB systems. Integrating AWS services for secure file handling and implemented Stripe for seamless financial transactions.",
+    tags: ["Node.js", "MongoDB", "AWS", "Stripe"]
+  }
 ];
 
 export default function Experience() {
@@ -80,14 +60,49 @@ export default function Experience() {
                  hoverRadius={120}
                />
              </div>
-             <div className="mt-8 flex flex-col items-center">
-                <span className="text-xl md:text-2xl font-medium text-white/80">Backend Software Developer @ Ingen Tech</span>
-                <span className="text-sm font-mono text-white/30 tracking-widest mt-2 uppercase">Jaipur, India</span>
-             </div>
            </div>
          </motion.div>
 
-        <StickyExperience items={timelineData} />
+        <div className="max-w-4xl mx-auto space-y-8">
+          {experiences.map((exp, i) => (
+            <motion.div
+              key={i}
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ delay: i * 0.1 }}
+              className="glass rounded-2xl p-8 border border-white/5 hover:border-[#c3e41d]/20 transition-all duration-500 group"
+            >
+              <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-4">
+                <div>
+                  <h3 className="text-xl md:text-2xl font-bold text-white group-hover:text-[#c3e41d] transition-colors">
+                    {exp.role}
+                  </h3>
+                  {exp.location && (
+                    <p className="text-sm text-white/40 font-mono mt-1">{exp.location}</p>
+                  )}
+                </div>
+                <div className="shrink-0">
+                  <span className="px-4 py-1.5 rounded-full bg-white/5 text-[#c3e41d] text-xs font-mono font-bold tracking-wider">
+                    {exp.period}
+                  </span>
+                </div>
+              </div>
+              
+              <p className="text-white/60 leading-relaxed mb-6 text-base md:text-lg">
+                {exp.description}
+              </p>
+              
+              <div className="flex flex-wrap gap-2">
+                {exp.tags.map(tag => (
+                  <span key={tag} className="text-[10px] uppercase tracking-[0.2em] text-white/20 font-bold border border-white/5 px-3 py-1 rounded">
+                    {tag}
+                  </span>
+                ))}
+              </div>
+            </motion.div>
+          ))}
+        </div>
       </div>
     </section>
   );
