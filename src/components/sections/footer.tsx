@@ -26,11 +26,7 @@ export default function Footer() {
         </div>
 
         <p className="text-white/30 text-xs font-mono tracking-wide">
-          © {year} Utkarsh Gupta · Built with Next.js & ❤️
-        </p>
-
-        <p className="text-white/20 text-xs font-mono">
-          Designed & Developed from scratch
+          © {year} Utkarsh Gupta
         </p>
       </motion.div>
     </footer>

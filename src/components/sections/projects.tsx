@@ -1,35 +1,41 @@
 "use client";
 
-import { motion } from "framer-motion";
 import { useState, useEffect } from "react";
+import { motion, AnimatePresence } from "framer-motion";
 import { 
   Code2, 
   Plane, 
   Database, 
   ArrowUpRight,
-  ExternalLink
+  ExternalLink,
+  ChevronLeft,
+  ChevronRight
 } from "lucide-react";
 import { ParticleText } from "@/components/ui/particle-text";
 import { CardBody, CardContainer, CardItem } from "@/components/ui/3d-card-effect";
-
-const GithubIcon = ({ className }: { className?: string }) => (
-  <svg className={className} viewBox="0 0 24 24" fill="currentColor">
-    <path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/>
-  </svg>
-);
 
 const projects = [
   {
     title: "Ghummakad Yatri",
     description: "A premium travel booking engine with integrated payment gateways and role-based administration.",
-    image: "https://images.unsplash.com/photo-1463123081488-789f998ac9c4?q=80&w=2670&auto=format&fit=crop",
     tech: ["React", "Node.js", "Stripe"],
-    link: "https://ghumakkad-yatri.vercel.app/"
+    link: "https://ghumakkad-yatri.vercel.app/",
+    image: "/projects/ghumakkad.png"
+  },
+  {
+    title: "Advocate Kamlesh",
+    description: "Professional portfolio for a Supreme Court Advocate, featuring a refined judicial aesthetic and integrated consultation booking.",
+    tech: ["Next.js", "Tailwind CSS", "Framer Motion"],
+    link: "https://advocate-kamlesh.in/",
+    image: "/projects/advocate.png"
   }
 ];
 
 export default function Projects() {
   const [fontSize, setFontSize] = useState(120);
+  const [currentIndex, setCurrentIndex] = useState(0);
+  const [direction, setDirection] = useState(0);
+  const [isPaused, setIsPaused] = useState(false);
 
   useEffect(() => {
     const handleResize = () => {
@@ -40,6 +46,41 @@ export default function Projects() {
     window.addEventListener("resize", handleResize);
     return () => window.removeEventListener("resize", handleResize);
   }, []);
+
+  // Auto-play with Pause on Hover
+  useEffect(() => {
+    if (isPaused) return;
+
+    const timer = setInterval(() => {
+      paginate(1);
+    }, 3000);
+    return () => clearInterval(timer);
+  }, [currentIndex, isPaused]);
+
+  const paginate = (newDirection: number) => {
+    setDirection(newDirection);
+    setCurrentIndex((prev) => (prev + newDirection + projects.length) % projects.length);
+  };
+
+  const variants = {
+    enter: (direction: number) => ({
+      x: direction > 0 ? 1000 : -1000,
+      opacity: 0,
+      scale: 0.9,
+    }),
+    center: {
+      zIndex: 1,
+      x: 0,
+      opacity: 1,
+      scale: 1,
+    },
+    exit: (direction: number) => ({
+      zIndex: 0,
+      x: direction < 0 ? 1000 : -1000,
+      opacity: 0,
+      scale: 0.9,
+    }),
+  };
 
   return (
     <section id="projects" className="section-padding relative overflow-hidden bg-black pb-32">
@@ -89,65 +130,129 @@ export default function Projects() {
            </div>
          </motion.div>
 
-        <div className="flex justify-center">
-          <div className="max-w-2xl w-full">
-            {projects.map((project, i) => (
-              <CardContainer key={i} className="inter-var">
-                <CardBody className="bg-neutral-950/50 backdrop-blur-sm relative group/card border border-white/10 w-full h-[450px] rounded-2xl p-6 transition-colors hover:border-[#c3e41d]/30">
-                  <CardItem
-                    translateZ="50"
-                    className="text-2xl font-bold text-white mb-2"
-                  >
-                    {project.title}
-                  </CardItem>
-                  <CardItem
-                    as="p"
-                    translateZ="60"
-                    className="text-neutral-400 text-sm max-w-sm mb-6"
-                  >
-                    {project.description}
-                  </CardItem>
-                  
-                  <CardItem translateZ="100" className="w-full mb-8">
-                    <div className="relative h-56 w-full rounded-xl overflow-hidden group/img">
-                      <img
-                        src={project.image}
-                        className="h-full w-full object-cover transition-transform duration-500 group-hover/img:scale-105"
-                        alt={project.title}
-                      />
-                      <div className="absolute inset-0 bg-black/40 group-hover/img:bg-black/20 transition-colors" />
-                    </div>
-                  </CardItem>
-
-                  <div className="flex justify-between items-center">
-                    <div className="flex gap-2">
-                      {project.tech.map((t, idx) => (
-                        <CardItem
-                          key={idx}
-                          translateZ={20 + (idx * 10)}
-                          className="px-3 py-1 bg-white/5 border border-white/10 rounded-full text-[10px] text-white/50"
-                        >
-                          {t}
-                        </CardItem>
-                      ))}
-                    </div>
-                    
-                    <div className="flex gap-3">
-                      <CardItem
-                        translateZ={20}
-                        as="a"
-                        href={project.link}
-                        className="p-3 rounded-full bg-[#c3e41d] text-black hover:scale-110 transition-all font-bold flex items-center gap-2"
-                      >
-                         <span className="text-xs uppercase tracking-wider">View Project</span>
-                        <ArrowUpRight size={16} />
-                      </CardItem>
-                    </div>
-                  </div>
-                </CardBody>
-              </CardContainer>
-            ))}
+        <div className="relative flex justify-center items-center h-[600px] w-full max-w-4xl mx-auto overflow-visible">
+          {/* Layout hint for mobile: 1.5 projects */}
+          <div className="hidden md:block absolute -left-12 z-20">
+             <button
+                onClick={() => paginate(-1)}
+                className="p-4 rounded-full bg-white/5 border border-white/10 text-white/50 hover:text-[#c3e41d] hover:border-[#c3e41d]/50 hover:bg-[#c3e41d]/5 transition-all backdrop-blur-md"
+             >
+                <ChevronLeft size={24} />
+             </button>
           </div>
+
+          <div className="w-full h-full relative overflow-visible flex items-center justify-center">
+            <AnimatePresence initial={false} custom={direction}>
+              <motion.div
+                key={currentIndex}
+                custom={direction}
+                variants={variants}
+                initial="enter"
+                animate="center"
+                exit="exit"
+                transition={{
+                  x: { type: "spring", stiffness: 300, damping: 30 },
+                  opacity: { duration: 0.2 },
+                  scale: { duration: 0.4 },
+                }}
+                className="absolute w-full px-4 md:px-0"
+              >
+                <div 
+                  onMouseEnter={() => setIsPaused(true)}
+                  onMouseLeave={() => setIsPaused(false)}
+                >
+                  <CardContainer className="inter-var w-full">
+                    <CardBody 
+                      onClick={() => window.open(projects[currentIndex].link, "_blank")}
+                      className="bg-neutral-950/80 backdrop-blur-xl relative group/card border border-white/10 w-full h-auto rounded-3xl p-10 transition-colors hover:border-[#c3e41d]/30 hover:shadow-2xl hover:shadow-[#c3e41d]/[0.1] shadow-2xl cursor-pointer"
+                    >
+                      <CardItem
+                        translateZ={100}
+                        translateX={-10}
+                        className="text-3xl md:text-4xl font-bold text-white mb-2"
+                      >
+                        {projects[currentIndex].title}
+                      </CardItem>
+                      <CardItem
+                        as="p"
+                        translateZ={120}
+                        translateX={-5}
+                        className="text-neutral-400 text-sm md:text-base max-w-sm mb-8 leading-relaxed"
+                      >
+                        {projects[currentIndex].description}
+                      </CardItem>
+
+                      <CardItem translateZ={180} translateX={5} translateY={-10} className="w-full mb-10 shadow-3xl">
+                        <div className="relative h-64 md:h-80 w-full rounded-2xl overflow-hidden group/img border border-white/10 bg-neutral-900 ring-1 ring-white/5">
+                          <img
+                            src={projects[currentIndex].image}
+                            alt={projects[currentIndex].title}
+                            className="w-full h-full object-cover transition-transform duration-700 group-hover/img:scale-110"
+                          />
+                          <div className="absolute inset-0 bg-black/40 group-hover/img:bg-black/20 transition-colors pointer-events-none" />
+                          <div className="absolute top-4 left-4 px-3 py-1.5 rounded-full bg-black/60 backdrop-blur-md text-[#c3e41d] text-[10px] font-bold uppercase tracking-widest border border-[#c3e41d]/20 pointer-events-none shadow-lg">
+                            Project Insight
+                          </div>
+                        </div>
+                      </CardItem>
+
+                      <div className="flex justify-between items-center mt-6">
+                        <div className="flex flex-wrap gap-2">
+                          {projects[currentIndex].tech.map((t, idx) => (
+                            <CardItem
+                              key={idx}
+                              translateZ={80 + (idx * 10)}
+                              className="px-3 py-1 bg-white/5 border border-white/10 rounded-full text-[10px] text-white/50"
+                            >
+                              {t}
+                            </CardItem>
+                          ))}
+                        </div>
+                        
+                        <CardItem
+                          translateZ={100}
+                          translateX={15}
+                          as="a"
+                          href={projects[currentIndex].link}
+                          target="_blank"
+                          className="px-6 py-2.5 rounded-xl bg-[#c3e41d] text-black hover:scale-110 transition-all font-bold flex items-center gap-2 group/btn shadow-[0_10px_30px_rgba(195,228,29,0.3)]"
+                        >
+                          <span className="text-xs uppercase tracking-wider">Explore Live</span>
+                          <ArrowUpRight size={16} className="group-hover/btn:translate-x-0.5 group-hover/btn:-translate-y-0.5 transition-transform" />
+                        </CardItem>
+                      </div>
+                    </CardBody>
+                  </CardContainer>
+                </div>
+              </motion.div>
+            </AnimatePresence>
+          </div>
+
+          <div className="hidden md:block absolute -right-12 z-20">
+             <button
+                onClick={() => paginate(1)}
+                className="p-4 rounded-full bg-white/5 border border-white/10 text-white/50 hover:text-[#c3e41d] hover:border-[#c3e41d]/50 hover:bg-[#c3e41d]/5 transition-all backdrop-blur-md"
+             >
+                <ChevronRight size={24} />
+             </button>
+          </div>
+        </div>
+
+        {/* Pagination Dots */}
+        <div className="flex justify-center gap-3 mt-8">
+          {projects.map((_, i) => (
+            <button
+              key={i}
+              onClick={() => {
+                setDirection(i > currentIndex ? 1 : -1);
+                setCurrentIndex(i);
+              }}
+              className={`w-2 h-2 rounded-full transition-all duration-300 ${
+                i === currentIndex ? "w-8 bg-[#c3e41d]" : "bg-white/20 hover:bg-white/40"
+              }`}
+              aria-label={`Go to project ${i + 1}`}
+            />
+          ))}
         </div>
       </div>
     </section>

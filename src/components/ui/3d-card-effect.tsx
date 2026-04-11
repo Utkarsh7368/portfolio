@@ -1,7 +1,7 @@
 "use client";
 
 import { cn } from "@/lib/utils";
-
+import { motion, useMotionValue, useSpring, useTransform } from "framer-motion";
 import React, {
   createContext,
   useState,
@@ -26,51 +26,68 @@ export const CardContainer = ({
   const containerRef = useRef<HTMLDivElement>(null);
   const [isMouseEntered, setIsMouseEntered] = useState(false);
 
+  // Use Motion Values and Springs for silky smooth performance
+  const x = useMotionValue(0);
+  const y = useMotionValue(0);
+
+  const springConfig = { damping: 20, stiffness: 150 };
+  const rotateX = useSpring(y, springConfig);
+  const rotateY = useSpring(x, springConfig);
+
   const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
     if (!containerRef.current) return;
     const { left, top, width, height } =
       containerRef.current.getBoundingClientRect();
-    const x = (e.clientX - left - width / 2) / 25;
-    const y = (e.clientY - top - height / 2) / 25;
-    containerRef.current.style.transform = `rotateY(${x}deg) rotateX(${y}deg)`;
+    
+    // Calculate rotation: center of card is 0,0
+    const mouseX = e.clientX - left;
+    const mouseY = e.clientY - top;
+    
+    const xPct = (mouseX / width - 0.5) * 60; // Max 30deg rotate
+    const yPct = (mouseY / height - 0.5) * -60; // Max 30deg rotate
+
+    x.set(xPct);
+    y.set(yPct);
   };
 
   const handleMouseEnter = (e: React.MouseEvent<HTMLDivElement>) => {
     setIsMouseEntered(true);
-    if (!containerRef.current) return;
   };
 
   const handleMouseLeave = (e: React.MouseEvent<HTMLDivElement>) => {
-    if (!containerRef.current) return;
     setIsMouseEntered(false);
-    containerRef.current.style.transform = `rotateY(0deg) rotateX(0deg)`;
+    x.set(0);
+    y.set(0);
   };
+
   return (
     <MouseEnterContext.Provider value={[isMouseEntered, setIsMouseEntered]}>
       <div
         className={cn(
-          "py-4 flex items-center justify-center",
+          "py-10 flex items-center justify-center",
           containerClassName
         )}
         style={{
-          perspective: "1000px",
+          perspective: "600px",
         }}
       >
-        <div
+        <motion.div
           ref={containerRef}
           onMouseEnter={handleMouseEnter}
           onMouseMove={handleMouseMove}
           onMouseLeave={handleMouseLeave}
-          className={cn(
-            "flex items-center justify-center relative transition-all duration-200 ease-linear",
-            className
-          )}
           style={{
+            rotateX,
+            rotateY,
             transformStyle: "preserve-3d",
           }}
+          className={cn(
+            "flex items-center justify-center relative transition-shadow duration-300",
+            className
+          )}
         >
           {children}
-        </div>
+        </motion.div>
       </div>
     </MouseEnterContext.Provider>
   );
@@ -79,9 +96,11 @@ export const CardContainer = ({
 export const CardBody = ({
   children,
   className,
+  ...rest
 }: {
   children: React.ReactNode;
   className?: string;
+  [key: string]: any;
 }) => {
   return (
     <div
@@ -89,6 +108,7 @@ export const CardBody = ({
         "h-96 w-96 [transform-style:preserve-3d]  [&>*]:[transform-style:preserve-3d]",
         className
       )}
+      {...rest}
     >
       {children}
     </div>
@@ -118,30 +138,30 @@ export const CardItem = ({
   rotateZ?: number | string;
   [key: string]: any;
 }) => {
-  const ref = useRef<HTMLDivElement>(null);
   const [isMouseEntered] = useMouseEnter();
 
-  useEffect(() => {
-    handleAnimations();
-  }, [isMouseEntered]);
-
-  const handleAnimations = () => {
-    if (!ref.current) return;
-    if (isMouseEntered) {
-      ref.current.style.transform = `translateX(${translateX}px) translateY(${translateY}px) translateZ(${translateZ}px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) rotateZ(${rotateZ}deg)`;
-    } else {
-      ref.current.style.transform = `translateX(0px) translateY(0px) translateZ(0px) rotateX(0deg) rotateY(0deg) rotateZ(0deg)`;
-    }
-  };
-
+  // Use framer-motion for the pop-up effect instead of CSS transitions
+  // This ensures syncing with the container's spring motion
   return (
-    <Tag
-      ref={ref}
-      className={cn("w-fit transition duration-200 ease-linear", className)}
+    <motion.div
+      animate={{
+        translateX: isMouseEntered ? translateX : 0,
+        translateY: isMouseEntered ? translateY : 0,
+        translateZ: isMouseEntered ? translateZ : 0,
+        rotateX: isMouseEntered ? rotateX : 0,
+        rotateY: isMouseEntered ? rotateY : 0,
+        rotateZ: isMouseEntered ? rotateZ : 0,
+      }}
+      transition={{
+        type: "spring",
+        stiffness: 150,
+        damping: 20,
+      }}
+      className={cn("w-fit", className)}
       {...rest}
     >
-      {children}
-    </Tag>
+      {Tag !== "div" ? <Tag>{children}</Tag> : children}
+    </motion.div>
   );
 };
 

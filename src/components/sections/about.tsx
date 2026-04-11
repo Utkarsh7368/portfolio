@@ -7,7 +7,6 @@ import { ParticleText } from "@/components/ui/particle-text";
 
 const stats = [
   { value: "300+", label: "LeetCode Solved" },
-  { value: "50+", label: "Global Clients" },
   { value: "100%", label: "Success Rate" },
 ];
 
@@ -156,7 +155,7 @@ export default function About() {
             </div>
 
             {/* Stats grid */}
-            <div className="grid grid-cols-3 gap-4">
+            <div className="grid grid-cols-2 gap-4">
               {stats.map((stat, i) => (
                 <motion.div
                   key={stat.label}
